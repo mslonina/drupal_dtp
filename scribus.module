@@ -1,0 +1,112 @@
+<?php
+
+function scribus_filter_info() {
+  return array(
+    'scribus' => array(
+      'title' => t('Scribus'),
+      'description' => t('Adds DTP refinements'),
+      'process callback' => '_scribus_filter_process',
+      'settings callback' => '_scribus_filter_settings',
+      'default settings' => array(
+        'use_emdash' => 1,
+        'replace_spaces' => 1,
+        'no_dot_spaces' => 1,
+        'replace_quotes' => 1,
+      ),
+    ),
+    );
+}
+
+function _scribus_filter_process($text, $filter, $format, $langcode, $cache, $cache_id) {
+  
+  // Step 1: Replace multiple spaces with one
+  if ($filter->settings['replace_spaces']) {
+    $text = preg_replace('!\s+!', ' ', $text);
+    $text = preg_replace('!\t+!', ' ', $text);
+  }
+  
+  // Step 2: Remove spaces before question, aclamation marks etc.
+  if ($filter->settings['no_dot_spaces']) {
+    $text = str_replace(' .','.',$text);
+    $text = str_replace(' ;',';',$text);
+    $text = str_replace(' :',':',$text);
+    $text = str_replace(' !','!',$text);
+    $text = str_replace(' ?','?',$text);
+    $text = str_replace(' )',')',$text);
+    $text = str_replace('( ','(',$text);
+    $text = str_replace(' ]',']',$text);
+    $text = str_replace('[ ','[',$text);
+    $text = str_replace(' }','}',$text);
+    $text = str_replace('{ ','{',$text);
+    $text = str_replace(',, ',',,',$text);
+    $text = str_replace(" ''","''",$text);
+    $text = str_replace(' "','"',$text);
+  }
+
+  // Step 3: Replace -- and --- with &ndash; and &mdash;
+  $text = str_replace('---','&mdash;',$text);
+  if ($filter->settings['use_emdash']) {
+    $text = str_replace('--','&mdash;',$text);
+  } else {
+    $text = str_replace('--','&ndash;',$text);
+  }
+
+  // Step 4: Replace ,, with &bdquo; and '' with &rdquo;
+  if ($filter->settings['replace_quotes']) {
+    $text = str_replace(',,','&bdquo;',$text);
+    $text = str_replace("''",'&rdquo;',$text);
+    $text = str_replace('"','&rdquo;',$text);
+  }
+
+  // This is special case for commas in polish language
+  if ($filter->settings['no_dot_spaces']) {
+    $text = str_replace(' ,',',',$text);
+  }
+
+  return $text;
+}
+
+function _scribus_filter_settings(&$form_state, $filter, $defaults, $format, $filters) {
+
+  $defaults->settings += array(
+    'use_emdash' => 1,
+    'replace_spaces' => 1,
+    'no_dot_spaces' => 1,
+    'replace_quotes' => 1,
+  );
+
+  $form = array();
+  $form['help'] = array(
+    '#type' => 'markup',
+    '#value' => '<p>Enable following refinements:</p>',
+  );
+
+  $form['use_emdash'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Replace en-dashes -- with --- em-dashes'),
+    '#default_value' => $defaults->settings['use_emdash'],
+  );
+
+  $form['replace_spaces'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Replace multiple spaces'),
+    '#default_value' => $defaults->settings['replace_spaces'],
+  );
+  
+  $form['replace_quotes'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Replace quotes'),
+    '#default_value' => $defaults->settings['replace_quotes'],
+  );
+  
+  $form['no_dot_spaces'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Remove spaces before quotation, aclamation marks etc.'),
+    '#default_value' => $defaults->settings['no_dot_spaces'],
+  );
+
+  return $form;
+
+}
+
+?>

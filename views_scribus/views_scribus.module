@@ -1,0 +1,43 @@
+<?php
+
+/**
+ * Implementation of hook_views_api().
+ */
+function views_scribus_views_api() {
+  return array(
+    'api' => 2,
+  );
+}
+
+function template_preprocess_views_view_scribus(&$vars) {
+
+  $view     = $vars['view'];
+  $fields   = &$view->field;
+
+  $rows = $vars['rows'];
+
+  $vars['themed_rows'] = array();
+  $keys = array_keys($fields);
+  foreach ($rows as $num => $row) {
+    $vars['themed_rows'][$num] = array();
+
+    foreach ($keys as $id) {
+      if (empty($fields[$id]->options['exclude'])) {
+        $vars['themed_rows'][$num][$id] = $view->style_plugin->rendered_fields[$num][$id];
+      }   
+    }   
+  }
+
+  foreach ($vars['themed_rows'] as $num => $row) {
+    foreach ($row as $field => $content) {
+      // Prevent double encoding of the ampersand. Look for the entities produced by check_plain().
+      $content = preg_replace('/&(?!(amp|quot|#039|lt|gt);)/', '&amp;', $content);
+      // Strip any div tags
+      $content = preg_replace('/<div.*?>/','',$content);
+      $content = preg_replace('/<\/div>/','',$content);
+      $vars['themed_rows'][$num][$field] = $content;
+    }
+  }
+
+}
+?>

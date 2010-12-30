@@ -1,4 +1,6 @@
 <?php
+// $Id$
+
 /**
  * @file
  * Views include file with views hooks.
@@ -29,4 +31,3 @@ function views_scribus_views_plugins() {
   );
 }
 
-?>

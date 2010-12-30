@@ -1,4 +1,6 @@
 <?php
+// $Id$
+
 /**
  * @file
  * Plugin include file for export style plugin.

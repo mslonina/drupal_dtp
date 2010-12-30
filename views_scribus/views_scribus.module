@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 /**
  * Implementation of hook_views_api().
@@ -33,11 +34,11 @@ function template_preprocess_views_view_scribus(&$vars) {
       // Prevent double encoding of the ampersand. Look for the entities produced by check_plain().
       $content = preg_replace('/&(?!(amp|quot|#039|lt|gt);)/', '&amp;', $content);
       // Strip any div tags
-      $content = preg_replace('/<div.*?>/','',$content);
-      $content = preg_replace('/<\/div>/','',$content);
+      $content = preg_replace('/<div.*?>/', '', $content);
+      $content = preg_replace('/<\/div>/', '', $content);
       $vars['themed_rows'][$num][$field] = $content;
     }
   }
 
 }
-?>
+

@@ -1,13 +1,13 @@
 <?php
 // $id$
 
-function scribus_filter_info() {
+function dtp_filter_info() {
   return array(
-    'scribus' => array(
+    'dtp' => array(
       'title' => t('Scribus'),
       'description' => t('Adds DTP refinements'),
-      'process callback' => '_scribus_filter_process',
-      'settings callback' => '_scribus_filter_settings',
+      'process callback' => '_dtp_filter_process',
+      'settings callback' => '_dtp_filter_settings',
       'default settings' => array(
         'use_emdash' => 1,
         'replace_spaces' => 1,
@@ -18,7 +18,7 @@ function scribus_filter_info() {
     );
 }
 
-function _scribus_filter_process($text, $filter, $format, $langcode, $cache, $cache_id) {
+function _dtp_filter_process($text, $filter, $format, $langcode, $cache, $cache_id) {
   
   // Step 1: Replace multiple spaces with one
   if ($filter->settings['replace_spaces']) {
@@ -68,7 +68,7 @@ function _scribus_filter_process($text, $filter, $format, $langcode, $cache, $ca
   return $text;
 }
 
-function _scribus_filter_settings(&$form_state, $filter, $defaults, $format, $filters) {
+function _dtp_filter_settings(&$form_state, $filter, $defaults, $format, $filters) {
 
   $defaults->settings += array(
     'use_emdash' => 1,

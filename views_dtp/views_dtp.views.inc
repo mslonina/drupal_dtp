@@ -9,7 +9,22 @@
 /**
  * Implementation of hook_views_plugins().
  */
-function views_scribus_views_plugins() {
+function views_dtp_views_plugins() {
+
+  $path = drupal_get_path('module', 'views_dtp');
+/*
+  $style_defaults = array(
+    'path' => $path . '/plugins',
+    'parent' => 'views_data_export',
+    'theme' => 'views_data_export',
+    'theme path' => $path . '/theme',
+    'theme file' => 'views_data_export.theme.inc',
+    'uses row plugin' => FALSE,
+    'uses fields' => TRUE,
+    'uses options' => TRUE,
+    'type' => 'data_export',
+  );
+*/
   return array(
     'style' => array(
       'views_scribus' => array(

@@ -1,0 +1,16 @@
+name = Views DTP
+description = "Views Data Export plugins for various DTP applications."
+
+package = DTP
+core = 7.x
+
+dependencies[] = views
+dependencies[] = views_data_export
+
+files[] = views_dtp.module
+files[] = views_dtp.views.inc
+files[] = plugins/views_scribus_style_plugin.inc
+files[] = theme/views-view-scribus.tpl.php
+
+version = "7.x-1.0-alpha1"
+

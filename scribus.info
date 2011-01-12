@@ -1,7 +1,0 @@
-name = Scribus
-description = Tools for interaction with Scribus
-package = Scribus
-project = scribus
-core = 7.x
-files[] = scribus.module
-version = 7.x-1.0-alpha1
